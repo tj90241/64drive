@@ -1,0 +1,4 @@
+*.o
+libusb64drive.a
+64drive_writerom
+
