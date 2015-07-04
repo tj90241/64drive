@@ -67,34 +67,34 @@ int usb64drive_open(const char *path) {
   cfsetispeed(&tty, B9600);
   cfsetospeed(&tty, B9600);
 
-  /* 8-bit chars. */
+  // 8-bit chars.
   tty.c_cflag = (tty.c_cflag & ~CSIZE) | CS8;
 
-  /* Ignore break signal. */
+  // Ignore break signal.
   tty.c_iflag &= ~IGNBRK;
 
-  /* No signaling chars. */
+  // No signaling chars.
   tty.c_lflag = 0;
 
-  /* No remapping, no delays. */
+  // No remapping, no delays.
   tty.c_oflag = 0;
 
-  /* No blocking reads, 0.5 sec read timeout. */
+  // No blocking reads, 0.5 sec read timeout.
   tty.c_cc[VMIN] = 0;
   tty.c_cc[VTIME] = 5;
 
-  /* Shut off XON/XOFF. */
+  // Shut off XON/XOFF.
   tty.c_iflag &= ~(IXON | IXOFF | IXANY);
 
-  /* Ignore modem controls, enable reading. */
+  // Ignore modem controls, enable reading.
   tty.c_cflag |= (CLOCAL | CREAD);
 
-  /* Shut off parity. */
+  // Shut off parity.
   tty.c_cflag &= ~(PARENB | PARODD | CMSPAR);
   tty.c_cflag &= ~CSTOPB;
   tty.c_cflag &= ~CRTSCTS;
 
-  /* Gimme my CR. */
+  // Gimme my CR.
   tty.c_iflag &= ~(ICRNL | INLCR);
 
   if (tcsetattr(fd, TCSANOW, &tty) != 0)
@@ -113,7 +113,7 @@ int usb64drive_get_version(int fd, unsigned *version) {
   if (read(fd, rx, sizeof(rx)) != sizeof(rx))
     return -1;
 
-  /* Check magic... */
+  // Check magic.
   if (memcmp(rx + 4, usb64drive_dev_magic, sizeof(usb64drive_dev_magic))) {
     errno = EPROTO;
     return -1;
